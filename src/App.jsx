@@ -5,7 +5,7 @@ import { calculateWinner } from './calculateWinner';
 import StatusMessage from './components/StatusMessage';
 import History from './components/History';
 
-const NEW_GAME = [{ square: Array(9).fill(null), isXNext: false },]
+const NEW_GAME = [{ square: Array(9).fill(null), isXNext: false }];
 
 function App() {
   const [history, setHistory] = useState(NEW_GAME);
@@ -20,9 +20,11 @@ function App() {
       return;
     }
     setHistory(currentHistory => {
-      const isTraversing= currentMove+1 !== currentHistory.length;
+      const isTraversing = currentMove + 1 !== currentHistory.length;
 
-      const lastGamingState = isTraversing? currentHistory[currentMove]: currentHistory[currentHistory.length - 1];
+      const lastGamingState = isTraversing
+        ? currentHistory[currentMove]
+        : currentHistory[currentHistory.length - 1];
 
       const nextSquareState = lastGamingState.square.map(
         (squareValue, position) => {
@@ -32,8 +34,10 @@ function App() {
           return squareValue;
         }
       );
-      
-      const base= isTraversing? currentHistory.slice(0, currentHistory.indexOf(lastGamingState) + 1): currentHistory;
+
+      const base = isTraversing
+        ? currentHistory.slice(0, currentHistory.indexOf(lastGamingState) + 1)
+        : currentHistory;
 
       return base.concat({
         square: nextSquareState,
@@ -44,9 +48,14 @@ function App() {
     setCurrentMove(currentMove => currentMove + 1);
   };
 
-  const moveTo=(move)=>{
+  const moveTo = move => {
     setCurrentMove(move);
-  }
+  };
+
+  const onNewGameStart = () => {
+    setHistory(NEW_GAME);
+    setCurrentMove(0);
+  };
 
   return (
     <div className="app">
@@ -56,8 +65,16 @@ function App() {
         handleSquareClick={handleSquareClick}
       />
 
+      <button
+        type="button"
+        onClick={onNewGameStart}
+        className={`btn-reset ${winner ? 'active' : ''}`}
+      >
+        Start new game
+      </button>
+
       <h2>Current game history</h2>
-      <History history={history} moveTo={moveTo} currentMove={currentMove}/>
+      <History history={history} moveTo={moveTo} currentMove={currentMove} />
     </div>
   );
 }
