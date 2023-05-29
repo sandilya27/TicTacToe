@@ -1,13 +1,17 @@
+/* eslint-disable react/prop-types */
 import Square from './Square';
 
 // eslint-disable-next-line react/prop-types
-const Board = ({square,handleSquareClick}) => {
+const Board = ({square,handleSquareClick,winningSquares}) => {
   
   const renderSquare = position => {
+    const iswinningSquares= winningSquares.includes(position);
+
     return (
       <Square
         value={square[position]}
         onClick={() => handleSquareClick(position)}
+        iswinningSquares={iswinningSquares}
       />
     );
   };
